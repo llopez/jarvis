@@ -1,5 +1,6 @@
 "use client";
 
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { removeSession } from "./actions";
 
 export const SignOutButton = () => {
@@ -8,9 +9,10 @@ export const SignOutButton = () => {
       onClick={() => {
         removeSession();
       }}
-      className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      className="text-sm font-semibold leading-6 text-gray-900 flex items-center gap-2"
     >
-      Sign Out
+      <span>Sign Out</span>
+      <XMarkIcon className="h-4" />
     </button>
   );
 };
