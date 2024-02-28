@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getSession } from "./actions";
+import { checkAuth } from "@/app/actions";
 import { SignOutButton } from "@/app/SignOutButton";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 
@@ -9,8 +9,13 @@ const navigation = [
   { name: "Company", href: "#" },
 ];
 
-export default function Home() {
-  const session = getSession();
+export default async function Home() {
+  const user = await checkAuth(async (auth) => {
+    if (auth) {
+      return auth;
+    }
+    return null;
+  });
 
   return (
     <div className="bg-white">
@@ -36,7 +41,7 @@ export default function Home() {
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            {session ? (
+            {user ? (
               <SignOutButton />
             ) : (
               <Link

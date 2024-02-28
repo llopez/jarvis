@@ -1,7 +1,16 @@
 import Link from "next/link";
 import { Form } from "./Form";
+import { checkAuth } from "@/app/actions";
+import { redirect } from "next/navigation";
 
-export default function Login() {
+export default async function SignIn() {
+  await checkAuth(async (auth) => {
+    if (auth) {
+      redirect("/dashboard");
+    }
+    return null;
+  });
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">

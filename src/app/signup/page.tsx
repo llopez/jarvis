@@ -1,7 +1,16 @@
 import Link from "next/link";
 import { Form } from "./Form";
+import { checkAuth } from "@/app/actions";
+import { redirect } from "next/navigation";
 
-export default function Register() {
+export default async function SignUp() {
+  await checkAuth(async (auth) => {
+    if (auth) {
+      redirect("/dashboard");
+    }
+    return null;
+  });
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -15,11 +24,16 @@ export default function Register() {
           <Form />
 
           <p className="mt-10 text-center text-sm text-gray-500">
-            Already a member?{' '}
-            <Link href='/signin' className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Sign In</Link>
+            Already a member?{" "}
+            <Link
+              href="/signin"
+              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+            >
+              Sign In
+            </Link>
           </p>
         </div>
       </div>
     </>
-  )
+  );
 }

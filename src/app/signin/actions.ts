@@ -21,8 +21,6 @@ export const login = async (
   const email = data.get("email")!.toString();
   const password = data.get("password")!.toString();
 
-  console.log({ email, password });
-
   connect();
 
   const user = await User.findOne({ email });
