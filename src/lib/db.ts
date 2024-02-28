@@ -9,7 +9,7 @@ mongoose.connection.on("close", () => console.log("close"));
 
 export const connect = async (): Promise<void> => {
   try {
-    await mongoose.connect(process.env.MONGOOSE!, { maxPoolSize: 10 });
+    await mongoose.connect(process.env.MONGODB_URI!, { maxPoolSize: 10 });
   } catch (error) {
     console.log(error);
   }
