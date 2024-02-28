@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
 
   if (["/signin", "/signup"].includes(request.nextUrl.pathname)) {
     if (session?.value) {
-      NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL("/", request.url));
     }
   }
 
