@@ -1,12 +1,21 @@
 import { checkAuth } from "@/app/actions";
 import { redirect } from "next/navigation";
 
-export default async function Authorize() {
+export const dynamic = "force-dynamic";
+
+export default async function Authorize({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string };
+}) {
   await checkAuth(async (auth) => {
     if (auth) {
       return auth;
     }
-    redirect("/auth");
+
+    const carryOnParams = new URLSearchParams(searchParams).toString();
+
+    redirect("/auth?".concat(carryOnParams));
   });
 
   return (
