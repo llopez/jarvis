@@ -24,15 +24,15 @@ export default async function Authorize({
   const allow = async () => {
     "use server";
 
-    const token = crypto.randomBytes(64).toString("hex");
+    const authorizationCode = crypto.randomBytes(64).toString("hex");
 
     if (!user) return;
 
-    await User.updateOne({ _id: user._id }, { token });
+    await User.updateOne({ _id: user._id }, { authorizationCode });
 
     const { redirect_uri, state } = searchParams;
 
-    const queryParams = new URLSearchParams({ state, code: token }).toString();
+    const queryParams = new URLSearchParams({ state, code: authorizationCode }).toString();
 
     redirect(redirect_uri.concat("?").concat(queryParams));
   };
@@ -42,7 +42,7 @@ export default async function Authorize({
 
     if (!user) return;
 
-    await User.updateOne({ _id: user._id }, { token: null });
+    await User.updateOne({ _id: user._id }, { authorizationCode: null });
 
     revalidatePath("/auth");
   };
@@ -58,7 +58,7 @@ export default async function Authorize({
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm flex gap-2 justify-center">
         <form action={deny}>
           <button
-            disabled={!user?.token}
+            disabled={!user?.authorizationCode}
             className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Revoke
@@ -67,7 +67,7 @@ export default async function Authorize({
 
         <form action={allow}>
           <button
-            disabled={!!user?.token}
+            disabled={!!user?.authorizationCode}
             type="submit"
             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
