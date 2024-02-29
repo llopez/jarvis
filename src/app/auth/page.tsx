@@ -1,14 +1,12 @@
 import Link from "next/link";
 import { Form } from "./Form";
 
-type ParamsType = {
-  [key: string]: string;
-};
-
-export default async function SignIn({
+export default function SignIn({
+  params,
   searchParams,
 }: {
-  searchParams: ParamsType;
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   return (
     <>
