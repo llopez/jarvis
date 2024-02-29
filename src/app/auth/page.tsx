@@ -32,7 +32,7 @@ export default async function Authorize({
 
     const { redirect_uri, state } = searchParams;
 
-    const queryParams = new URLSearchParams({ state, token }).toString();
+    const queryParams = new URLSearchParams({ state, code: token }).toString();
 
     redirect(redirect_uri.concat("?").concat(queryParams));
   };
