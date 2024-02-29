@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Form } from "./Form";
 
+export const dynamic='force-dynamic';
+
 export default function SignIn({
   params,
   searchParams,
