@@ -14,10 +14,7 @@ type LoginSuccessResponse = undefined;
 
 export type LoginResponseType = LoginErrorResponse | LoginSuccessResponse;
 
-export const login = async (
-  prevState: any,
-  data: FormData
-): Promise<LoginResponseType> => {
+export const login = async (data: FormData, uri: string): Promise<LoginResponseType> => {
   const email = data.get("email")!.toString();
   const password = data.get("password")!.toString();
 
@@ -38,5 +35,5 @@ export const login = async (
     email: user.email,
   });
 
-  redirect("/auth/authorize");
+  redirect(uri);
 };

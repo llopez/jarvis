@@ -1,16 +1,20 @@
 "use client";
 
-import { login } from "./actions";
 import { useFormState } from "react-dom";
+import { LoginResponseType } from "./actions";
 
-export const Form = () => {
-  const [state, action] = useFormState(login, { error: "" });
+export const Form = ({
+  action,
+}: {
+  action: (prevState: any, data: FormData) => Promise<LoginResponseType>;
+}) => {
+  const [state, login] = useFormState(action, {
+    error: "",
+  });
 
   return (
-    <form className="space-y-6" action={action}>
-      <div>
-        { state?.error }
-      </div>
+    <form className="space-y-6" action={login}>
+      <div>{state?.error}</div>
       <div>
         <label
           htmlFor="email"

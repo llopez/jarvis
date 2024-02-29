@@ -1,45 +1,45 @@
-import Link from "next/link";
-import { Form } from "./Form";
+import { checkAuth } from "@/app/actions";
+import { redirect } from "next/navigation";
 
-export const dynamic='force-dynamic';
+export const dynamic = "force-dynamic";
 
-export default function SignIn({
-  params,
+export default async function Authorize({
   searchParams,
 }: {
-  params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: { [key: string]: string };
 }) {
+  await checkAuth(async (auth) => {
+    if (auth) {
+      return auth;
+    }
+
+    const carryOnParams = new URLSearchParams(searchParams).toString();
+
+    redirect("/auth/signin?".concat(carryOnParams));
+  });
+
   return (
-    <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign In
-          </h2>
-        </div>
-
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          {Object.keys(searchParams).map((key) => (
-            <li key={key}>
-              {key}: {searchParams[key]}
-            </li>
-          ))}
-        </div>
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <Form />
-
-          <p className="mt-10 text-center text-sm text-gray-500">
-            Not a member?{" "}
-            <Link
-              href="/signup"
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-            >
-              Sign Up
-            </Link>
-          </p>
-        </div>
+    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          Authorize Google
+        </h2>
       </div>
-    </>
+
+      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm flex gap-2">
+        <button
+          type="submit"
+          className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Authorize
+        </button>
+      </div>
+    </div>
   );
 }
