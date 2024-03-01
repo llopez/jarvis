@@ -2,6 +2,8 @@ import { NextRequest } from "next/server";
 import { User } from "@/models/User";
 import crypto from "crypto";
 
+export const dynamic = 'force-dynamic'
+
 export const POST = async (req: NextRequest) => {
   const data = await req.formData();
 
