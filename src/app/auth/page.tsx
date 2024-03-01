@@ -11,6 +11,35 @@ export default async function Authorize({
 }: {
   searchParams: { [key: string]: string };
 }) {
+  const checkParams = async (): Promise<boolean> => {
+    "use server";
+
+    console.log("searchParams", searchParams);
+
+    if (searchParams.client_id !== process.env.GOOGLE_CLIENT_ID) {
+      return false;
+    }
+
+    if (
+      searchParams.redirect_uri !==
+      "https://oauth-redirect.googleusercontent.com/r/jarvis-414915"
+    ) {
+      return false;
+    }
+    return true;
+  };
+
+  const valid = await checkParams();
+
+  if (!valid) {
+    return (
+      <>
+        <h1>Google Application Misconfigured</h1>
+        <p>update google action</p>
+      </>
+    );
+  }
+
   const user = await checkAuth(async (auth) => {
     if (auth) {
       return auth;
@@ -32,7 +61,10 @@ export default async function Authorize({
 
     const { redirect_uri, state } = searchParams;
 
-    const queryParams = new URLSearchParams({ state, code: authorizationCode }).toString();
+    const queryParams = new URLSearchParams({
+      state,
+      code: authorizationCode,
+    }).toString();
 
     redirect(redirect_uri.concat("?").concat(queryParams));
   };
