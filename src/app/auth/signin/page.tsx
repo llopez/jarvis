@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { Form } from "./Form";
 import { login } from "./actions";
+import { Box, Container, CssBaseline, Typography } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
+import HubIcon from '@mui/icons-material/Hub';
 
 export const dynamic = "force-dynamic";
 
@@ -21,35 +24,45 @@ export default async function SignIn({
   const action = await loginWithRedirect("/auth?".concat(carryOnParams));
 
   return (
-    <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign In
-          </h2>
-        </div>
-
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          {Object.keys(searchParams).map((key) => (
-            <li key={key}>
-              {key}: {searchParams[key]}
-            </li>
-          ))}
-        </div>
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <Form action={action} />
-
-          <p className="mt-10 text-center text-sm text-gray-500">
-            Not a member?{" "}
-            <Link
-              href="/signup"
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+    <Container>
+      <CssBaseline />
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        sx={{ minHeight: "100vh" }}
+      >
+        <Grid xs={10} md={6} lg={4}>
+          <Box
+            marginBottom={4}
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              gap: 2,
+              alignItems: "center",
+            }}
+          >
+            <HubIcon
+              fontSize="large"
+              color="primary"
+              sx={{ fontSize: "56px" }}
+            />
+            <Typography
+              variant="h4"
+              color="primary"
+              sx={{ fontWeight: "bold" }}
             >
-              Sign Up
-            </Link>
-          </p>
-        </div>
-      </div>
-    </>
+              Jarvis
+            </Typography>
+          </Box>
+          <Typography variant="h5">Sign In</Typography>
+          <Form action={action} />
+          <Typography variant="body2" marginTop={2} textAlign="end">
+            Not a member? <Link href="/signup">Sign Up</Link>
+          </Typography>
+        </Grid>
+      </Grid>
+    </Container>
   );
 }

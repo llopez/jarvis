@@ -3,6 +3,9 @@ import { redirect } from "next/navigation";
 import { User } from "@/models/User";
 import crypto from "crypto";
 import { revalidatePath } from "next/cache";
+import { Box, Button, Container, CssBaseline, Typography } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
+import HubIcon from "@mui/icons-material/Hub";
 
 export const dynamic = "force-dynamic";
 
@@ -34,8 +37,8 @@ export default async function Authorize({
   if (!valid) {
     return (
       <>
-        <h1>Google Application Misconfigured</h1>
-        <p>update google action</p>
+        <Typography variant="h5">Google Application Misconfigured</Typography>
+        <Typography variant="body1">update google action</Typography>
       </>
     );
   }
@@ -80,33 +83,62 @@ export default async function Authorize({
   };
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Authorize Google
-        </h2>
-      </div>
-
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm flex gap-2 justify-center">
-        <form action={deny}>
-          <button
-            disabled={!user?.authorizationCode}
-            className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+    <Container>
+      <CssBaseline />
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        direction="column"
+        sx={{ minHeight: "100vh" }}
+        gap={2}
+      >
+        <Grid xs={10} md={6} lg={4}>
+          <Box
+            marginBottom={2}
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              gap: 2,
+              alignItems: "center",
+            }}
           >
-            Revoke
-          </button>
-        </form>
+            <HubIcon
+              fontSize="large"
+              color="primary"
+              sx={{ fontSize: "56px" }}
+            />
+            <Typography
+              variant="h4"
+              color="primary"
+              sx={{ fontWeight: "bold" }}
+            >
+              Jarvis
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid>
+          <Typography variant="h5" textAlign="center">
+            Authorize Google
+          </Typography>
+        </Grid>
+        <Grid>
+          {!!user?.authorizationCode && (
+            <form action={deny}>
+              <Button variant="contained">Revoke</Button>
+            </form>
+          )}
 
-        <form action={allow}>
-          <button
-            disabled={!!user?.authorizationCode}
-            type="submit"
-            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Grant
-          </button>
-        </form>
-      </div>
-    </div>
+          {!user?.authorizationCode && (
+            <form action={allow}>
+              <Button type="submit" variant="contained">
+                Grant
+              </Button>
+            </form>
+          )}
+        </Grid>
+      </Grid>
+    </Container>
   );
 }
