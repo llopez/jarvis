@@ -38,5 +38,5 @@ export const login = async (
     email: user.email,
   });
 
-  redirect("/dashboard");
+  redirect("/admin");
 };

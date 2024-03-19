@@ -2,38 +2,58 @@ import Link from "next/link";
 import { Form } from "./Form";
 import { checkAuth } from "@/app/actions";
 import { redirect } from "next/navigation";
+import { Container, Typography, CssBaseline, Box } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
+import HubIcon from '@mui/icons-material/Hub';
 
 export default async function SignUp() {
   await checkAuth(async (auth) => {
     if (auth) {
-      redirect("/dashboard");
+      redirect("/admin");
     }
     return null;
   });
 
   return (
-    <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign Up
-          </h2>
-        </div>
-
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <Form />
-
-          <p className="mt-10 text-center text-sm text-gray-500">
-            Already a member?{" "}
-            <Link
-              href="/signin"
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+    <Container>
+      <CssBaseline />
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        sx={{ minHeight: "100vh" }}
+      >
+        <Grid xs={10} md={6} lg={4}>
+          <Box
+            marginBottom={4}
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              gap: 2,
+              alignItems: "center",
+            }}
+          >
+            <HubIcon
+              fontSize="large"
+              color="primary"
+              sx={{ fontSize: "56px" }}
+            />
+            <Typography
+              variant="h4"
+              color="primary"
+              sx={{ fontWeight: "bold" }}
             >
-              Sign In
-            </Link>
-          </p>
-        </div>
-      </div>
-    </>
+              Jarvis
+            </Typography>
+          </Box>
+          <Typography variant="h5">Sign Up</Typography>
+          <Form />
+          <Typography variant="body2" marginTop={2} textAlign="end">
+            Already a member? <Link href="/signin">Sign In</Link>
+          </Typography>
+        </Grid>
+      </Grid>
+    </Container>
   );
 }

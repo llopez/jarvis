@@ -2,33 +2,39 @@ import Link from "next/link";
 import { Form } from "./Form";
 import { checkAuth } from "@/app/actions";
 import { redirect } from "next/navigation";
+import { Container, Typography, CssBaseline, Box } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
+import HubIcon from '@mui/icons-material/Hub';
 
 export default async function SignIn() {
   await checkAuth(async (auth) => {
     if (auth) {
-      redirect("/dashboard");
+      redirect("/admin");
     }
     return null;
   });
 
   return (
-    <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign In
-          </h2>
-        </div>
-
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <Container>
+      <CssBaseline />
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        sx={{ minHeight: "100vh" }}
+      >
+        <Grid xs={10} md={6} lg={4}>
+          <Box  marginBottom={4} sx={{ display: "flex", flexDirection: "row", justifyContent: "center", gap: 2, alignItems: "center" }}>
+            <HubIcon fontSize="large" color="primary" sx={{ fontSize: "56px" }}/>
+            <Typography variant="h4" color="primary" sx={{fontWeight: "bold"}}>Jarvis</Typography>
+          </Box>
+          <Typography variant="h5">Sign In</Typography>
           <Form />
-
-          <p className="mt-10 text-center text-sm text-gray-500">
-            Not a member?{' '}
-            <Link href='/signup' className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Sign Up</Link>
-          </p>
-        </div>
-      </div>
-    </>
-  )
+          <Typography variant="body2" marginTop={2} textAlign="end">
+            Not a member? <Link href="/signup">Sign Up</Link>
+          </Typography>
+        </Grid>
+      </Grid>
+    </Container>
+  );
 }
