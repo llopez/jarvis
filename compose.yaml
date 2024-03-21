@@ -4,11 +4,13 @@ services:
     ports:
       - "1883:1883"
       - "9001:9001"
+    user: "1000:1000"
     volumes:
       - ./docker/mqtt/:/mosquitto/config/:ro
   db:
     image: "mongo"
     ports:
       - "27017:27017"
+    user: "1000:1000"
     volumes:
       - ./docker/mongo/data/db:/data/db
