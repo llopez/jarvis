@@ -1,5 +1,6 @@
 import { Device } from "@/models/Device";
 import { Execute_Intent__Type } from ".";
+import { getClient } from "@/lib/mqtt";
 
 export enum Command__Enum {
   OnOff = "action.devices.commands.OnOff",
@@ -50,6 +51,12 @@ const handleExecution = async (
   if (!device) return { status: "ERROR", errorCode: "deviceNotFound", id };
 
   if (command === Command__Enum.OnOff) {
+    const mqttClient = await getClient();
+
+    const topic = ["cmnd", device.identifier, "Power"].join("/");
+
+    mqttClient.publish(topic, params.on ? "on" : "off");
+
     device.states = { ...device.states, on: params.on };
   }
 
