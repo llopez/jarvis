@@ -1,9 +1,11 @@
 import mqtt, { MqttClient } from "mqtt";
 
+const MQTT_BROKER = process.env.MQTT_BROKER!;
+
 export let client: MqttClient;
 
 export const connect = async (): Promise<MqttClient> => {
-  client = await mqtt.connectAsync("mqtt://localhost");
+  client = await mqtt.connectAsync(MQTT_BROKER);
   console.log("mqtt: connected");
 
   await client.subscribeAsync("stat/#");

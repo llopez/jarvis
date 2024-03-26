@@ -1,0 +1,21 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c 'yarn install && yarn dev'
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mqtt
+      - db
+  # www:
+  #   image: nginx
+  #   ports:
+  #     - '80:80'
+  #     - '443:443'
+  #   volumes:
+  #     - ./docker/nginx/:/etc/nginx/conf.d/:ro
+  #   depends_on:
+  #     - app

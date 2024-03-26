@@ -6,11 +6,11 @@ services:
       - "9001:9001"
     user: "1000:1000"
     volumes:
-      - ./docker/mqtt/:/mosquitto/config/:ro
+      - ./docker/config/mqtt/:/mosquitto/config/:ro
   db:
     image: "mongo"
     ports:
       - "27017:27017"
     user: "1000:1000"
     volumes:
-      - ./docker/mongo/data/db:/data/db
+      - ./docker/data/mongo/data/db:/data/db
