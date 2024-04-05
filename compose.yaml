@@ -5,12 +5,14 @@ services:
       - "1883:1883"
       - "9001:9001"
     user: "1000:1000"
+    restart: unless-stopped
     volumes:
       - ./docker/config/mqtt/:/mosquitto/config/:ro
   db:
-    image: "mongo"
+    image: "mongo:3.6"
     ports:
       - "27017:27017"
     user: "1000:1000"
+    restart: unless-stopped
     volumes:
       - ./docker/data/mongo/data/db:/data/db

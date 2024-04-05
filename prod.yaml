@@ -1,21 +1,21 @@
-version: '3'
 services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
-    command: bash -c 'yarn install && yarn dev'
+      dockerfile: app.Dockerfile
+    command: bash -c 'yarn start'
+    restart: unless-stopped
     ports:
-      - '3000:3000'
+      - "3000:3000"
     depends_on:
       - mqtt
       - db
-  # www:
-  #   image: nginx
-  #   ports:
-  #     - '80:80'
-  #     - '443:443'
-  #   volumes:
-  #     - ./docker/nginx/:/etc/nginx/conf.d/:ro
-  #   depends_on:
-  #     - app
+      - tunnel
+  tunnel:
+    build:
+      context: .
+      dockerfile: tunnel.Dockerfile
+    command: 'ssh -o StrictHostKeyChecking=no -N -R localhost:8080:app:3000 ubuntu@3.94.111.182 -i /root/.ssh/luigis-key.pem'
+    restart: unless-stopped
+    volumes:
+      - ./docker/config/ssh:/root/.ssh
