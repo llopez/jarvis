@@ -1,0 +1,38 @@
+services:
+  mqtt:
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    user: "1000:1000"
+    restart: unless-stopped
+    volumes:
+      - /home/luigi/volumes/jarvis/config/mqtt/:/mosquitto/config/:ro
+  db:
+    image: "mongo:3.6"
+    ports:
+      - "27017:27017"
+    user: "1000:1000"
+    restart: unless-stopped
+    volumes:
+      - /home/luigi/volumes/jarvis/data/mongo/data/db:/data/db
+  app:
+    build:
+      context: .
+      dockerfile: app.Dockerfile
+    command: bash -c 'yarn start'
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mqtt
+      - db
+      - tunnel
+  tunnel:
+    build:
+      context: .
+      dockerfile: tunnel.Dockerfile
+    command: 'ssh -o StrictHostKeyChecking=no -N -R localhost:8080:app:3000 ubuntu@3.94.111.182 -i /root/luigis-key.pem'
+    restart: unless-stopped
+    volumes:
+      - /home/luigi/volumes/jarvis/config/tunnel:/root

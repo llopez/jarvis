@@ -8,3 +8,5 @@ WORKDIR /myapp
 
 COPY . .
 
+RUN yarn build
+
